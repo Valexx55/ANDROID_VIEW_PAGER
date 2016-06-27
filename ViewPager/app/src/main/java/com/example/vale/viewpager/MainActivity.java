@@ -3,46 +3,46 @@ package com.example.vale.viewpager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 public class MainActivity extends FragmentActivity {
-    /**
-     * The number of pages (wizard steps) to show in this demo.
-     */
-    private static final int NUM_PAGES = 5;
+
 
     /**
-     * The pager widget, which handles animation and allows swiping horizontally to access previous
-     * and next wizard steps.
+     * El VIEWPAGER permite transitar entre las pantallas. Se encarga de la animación y atiende al desplazmiento (swipe)
+     * Es el elemento contenedor
      */
-    private ViewPager mPager;
+    private ViewPager viewPager;
 
     /**
-     * The pager adapter, which provides the pages to the view pager widget.
+     * El PAGER ADAPTER es el "adapter" del VIEWPAGER. Es el proveedor de "patanllas". CUando el viewpager necesite transitar
+     * será el pageradapter el que le de las vistas (fragments en este caso)
      */
-    private PagerAdapter mPagerAdapter;
+    private PagerAdapter pagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_screen_slide);
 
-        // Instantiate a ViewPager and a PagerAdapter.
-        mPager = (ViewPager) findViewById(R.id.pager);
-        mPagerAdapter = new PageAdapterPropio(getSupportFragmentManager());
-        mPager.setAdapter(mPagerAdapter);
+        // Obtengo la referencia al ViewPager
+        viewPager = (ViewPager) findViewById(R.id.pager);
+        //Y le asigno su adpter
+        pagerAdapter = new PageAdapterPropio(getSupportFragmentManager());
+        viewPager.setAdapter(pagerAdapter);
     }
 
+
+    //Sobreescribiendo este método, consigo personalizar el comportamiento del botón "hacia atrás"
+    //en esta actividad.
     @Override
     public void onBackPressed() {
-        if (mPager.getCurrentItem() == 0) {
-            // If the user is currently looking at the first step, allow the system to handle the
-            // Back button. This calls finish() on this activity and pops the back stack.
+        if (viewPager.getCurrentItem() == 0) {
+            // Si estoy en la pantalla inicial, hago que se cierre la app (comportamiento por defecto logrado invocando al padre)
             super.onBackPressed();
         } else {
-            // Otherwise, select the previous step.
-            mPager.setCurrentItem(mPager.getCurrentItem() - 1);
+            // Si no, paso a una pantalla anterior
+            viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
         }
     }
 }
